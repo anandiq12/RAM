@@ -1,0 +1,12 @@
+node_modules/
+nexora.sqlite
+nexora.sqlite-shm
+nexora.sqlite-wal
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+npm-debug.log*
+*.log

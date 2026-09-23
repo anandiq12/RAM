@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexora — Premium Market</title>
+    <link rel="stylesheet" href="Style.css" />
+    <script src="Script.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="top-header">
+        <div class="brand-wrap">
+          <div class="logo-mark">N</div>
+          <div class="brand-text">
+            <span class="brand-name">Nexora</span>
+            <small>Premium Market</small>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="searchButton" aria-label="Search">🔍</button>
+          <button id="notificationButton" aria-label="Notifications">
+            🔔
+            <span id="notificationCount" class="notification-count">0</span>
+          </button>
+          <button id="cartButton" aria-label="Cart">
+            🛒
+            <span id="cartCount" class="cart-count">0</span>
+          </button>
+          <button id="adminButton" aria-label="Open admin panel" title="Admin panel">🛡️</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="top-apps" aria-label="Quick app shortcuts">
+          <div class="top-apps-copy">
+            <span class="top-apps-badge">NEXORA</span>
+            <strong>Everything you love, faster</strong>
+            <small>Shop premium picks in one place</small>
+          </div>
+          <button class="top-apps-action" type="button" data-home-action="offers">View deals</button>
+        </section>
+
+        <section class="hero">
+          <h2>New Collection</h2>
+          <p>Fresh arrivals and everyday essentials for your lifestyle.</p>
+        </section>
+
+        <section class="promo-banner" aria-label="Special offer">
+          <div class="promo-text">
+            <span class="promo-tag">Limited Offer</span>
+            <h3 class="promo-title">Big Sale</h3>
+            <p class="promo-offer">Up to 50% Off</p>
+            <button class="promo-button">Shop Now</button>
+          </div>
+          <div class="promo-visual">✨</div>
+        </section>
+
+        <div class="slider-dots" aria-label="Banner indicator">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <section class="flash-sale" aria-label="Flash Sale">
+          <div class="flash-sale-header">
+            <div>
+              <span class="flash-sale-label">⚡ Flash Sale</span>
+              <h3>Big Deals</h3>
+            </div>
+            <div class="deal-timer" aria-label="Flash sale countdown"><span id="dealHours">00</span><small>H</small><span>:</span><span id="dealMinutes">00</span><small>M</small><span>:</span><span id="dealSeconds">00</span><small>S</small></div>
+          </div>
+          <div class="deal-list">
+            <div class="deal-card">
+              <span class="deal-discount">UP TO 50% OFF</span>
+              <strong>Daily Essentials</strong>
+              <small>Limited time only</small>
+            </div>
+            <div class="deal-card deal-card-accent">
+              <span class="deal-discount">EXTRA 20% OFF</span>
+              <strong>Smart Gadgets</strong>
+              <small>Grab it before it ends</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="special-offers" aria-label="Special offers">
+          <div class="special-offers-heading"><div><span>🎁 MEMBER PERKS</span><h3>Special Offers</h3></div><small>Save more today</small></div>
+          <div class="offer-grid">
+            <article class="offer-card offer-coupon"><span class="offer-icon">🎟️</span><div><strong>Extra ₹100 off</strong><small>Use code <b>SAVE100</b> on orders above ₹999</small></div><button class="offer-copy" data-offer-code="SAVE100" type="button">Copy</button></article>
+            <article class="offer-card offer-bank"><span class="offer-icon">🏦</span><div><strong>Bank offer</strong><small>10% instant discount on select cards</small></div><button class="offer-copy" data-offer-code="BANK10" type="button">View</button></article>
+            <article class="offer-card offer-delivery"><span class="offer-icon">🚚</span><div><strong>Free delivery</strong><small>On premium orders above ₹1,499</small></div><button class="offer-copy" data-offer-code="FREEDEL" type="button">Unlock</button></article>
+          </div>
+        </section>
+
+        <section class="address-bar" id="deliveryAddressBar" aria-label="Delivery address">
+          <span class="address-icon">📍</span>
+          <div class="address-text">
+            <span class="label">Deliver to</span>
+            <strong>Add address</strong>
+          </div>
+          <button class="address-button">+</button>
+        </section>
+
+        <section class="search-box" id="homeSearchBox" aria-label="Search products">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search products..." aria-label="Search products" />
+          <button class="search-action camera" aria-label="Camera">📷</button>
+          <button class="search-action mic" aria-label="Microphone">🎙️</button>
+          <button class="filter-trigger" id="filterTrigger" type="button" aria-label="Open advanced filters" aria-expanded="false">⚙️</button>
+        </section>
+
+        <section class="shortcut-grid" aria-label="Quick categories">
+          <button class="shortcut-card" type="button" data-shortcut-category="For You">
+            <span class="shortcut-icon">🛍️</span>
+            <span>Shop</span>
+          </button>
+          <button class="shortcut-card" type="button" data-shortcut-category="Deals">
+            <span class="shortcut-icon">🏷️</span>
+            <span>Deals</span>
+          </button>
+          <button class="shortcut-card" type="button" data-shortcut-category="Travel">
+            <span class="shortcut-icon">✈️</span>
+            <span>Travel</span>
+          </button>
+          <button class="shortcut-card" type="button" data-shortcut-category="Grocery">
+            <span class="shortcut-icon">🥬</span>
+            <span>Grocery</span>
+          </button>
+        </section>
+
+        <nav class="category-nav" aria-label="Categories">
+          <button class="category-pill active" data-category="For You" aria-pressed="true"><span class="category-icon">✨</span><span>For You</span></button>
+          <button class="category-pill" data-category="Fashion" aria-pressed="false"><span class="category-icon">👗</span><span>Fashion</span></button>
+          <button class="category-pill" data-category="Mobiles" aria-pressed="false"><span class="category-icon">📱</span><span>Mobiles</span></button>
+          <button class="category-pill" data-category="Electronics" aria-pressed="false"><span class="category-icon">🎧</span><span>Electronics</span></button>
+          <button class="category-pill" data-category="Beauty" aria-pressed="false"><span class="category-icon">💄</span><span>Beauty</span></button>
+          <button class="category-pill" data-category="Home" aria-pressed="false"><span class="category-icon">🏠</span><span>Home</span></button>
+        </nav>
+
+        <div class="section-title">
+          <h3>Popular Products</h3>
+          <a href="#">View all</a>
+        </div>
+
+        <section class="products" aria-label="Popular products">
+          <article class="product-card" data-name="iphone pro case" data-price="₹499" data-original-price="₹649" data-discount="-20%" data-rating="4.8" data-reviews="128" data-category="Mobiles" data-brand="Apple">
+            <div class="product-image product-one">
+              <span class="product-discount">-20%</span>
+              <span class="product-category">Mobiles</span>
+              <button class="wishlist-btn" type="button" aria-label="Add iPhone Pro Case to wishlist">♡</button>
+            </div>
+            <div class="product-name">iPhone Pro Case</div>
+            <div class="product-rating">⭐ 4.8 <span>(128 reviews)</span></div>
+            <div class="product-meta">
+              <span class="product-price">₹499</span>
+              <span class="product-original">₹649</span>
+            </div>
+          </article>
+
+          <article class="product-card" data-name="wireless earbud" data-price="₹699" data-original-price="₹799" data-discount="-12%" data-rating="4.7" data-reviews="96" data-category="Electronics" data-brand="Soundcore">
+            <div class="product-image product-two">
+              <span class="product-discount">-12%</span>
+              <span class="product-category">Electronics</span>
+              <button class="wishlist-btn" type="button" aria-label="Add Wireless Earbuds to wishlist">♡</button>
+            </div>
+            <div class="product-name">Wireless Earbuds</div>
+            <div class="product-rating">⭐ 4.7 <span>(96 reviews)</span></div>
+            <div class="product-meta">
+              <span class="product-price">₹699</span>
+              <span class="product-original">₹799</span>
+            </div>
+          </article>
+
+          <article class="product-card" data-name="smart watch" data-price="₹899" data-original-price="₹1,099" data-discount="-18%" data-rating="4.9" data-reviews="214" data-category="Electronics" data-brand="Samsung">
+            <div class="product-image product-three">
+              <span class="product-discount">-18%</span>
+              <span class="product-category">Electronics</span>
+              <button class="wishlist-btn" type="button" aria-label="Add Smart Watch to wishlist">♡</button>
+            </div>
+            <div class="product-name">Smart Watch</div>
+            <div class="product-rating">⭐ 4.9 <span>(214 reviews)</span></div>
+            <div class="product-meta">
+              <span class="product-price">₹899</span>
+              <span class="product-original">₹1,099</span>
+            </div>
+          </article>
+
+          <article class="product-card" data-name="travel backpack" data-price="₹1,199" data-original-price="₹1,399" data-discount="-15%" data-rating="4.6" data-reviews="74" data-category="Fashion" data-brand="Nexora">
+            <div class="product-image product-four">
+              <span class="product-discount">-15%</span>
+              <span class="product-category">Fashion</span>
+              <button class="wishlist-btn" type="button" aria-label="Add Travel Backpack to wishlist">♡</button>
+            </div>
+            <div class="product-name">Travel Backpack</div>
+            <div class="product-rating">⭐ 4.6 <span>(74 reviews)</span></div>
+            <div class="product-meta">
+              <span class="product-price">₹1,199</span>
+              <span class="product-original">₹1,399</span>
+            </div>
+          </article>
+        </section>
+        <p class="products-empty hidden" id="productsEmpty" aria-live="polite">No products are available in this category yet.</p>
+        <p class="filter-result-summary" id="filterResultSummary" aria-live="polite"></p>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Bottom navigation">
+        <button class="nav-item active" data-nav="home" type="button">
+          <span class="nav-icon">🏠</span><span>Home</span>
+        </button>
+        <button class="nav-item" data-nav="categories" type="button">
+          <span class="nav-icon">📂</span><span>Categories</span>
+        </button>
+        <button class="nav-item" data-nav="cart" type="button">
+          <span class="nav-icon">🛒</span><span>Cart</span>
+        </button>
+        <button class="nav-item" data-nav="account" type="button">
+          <span class="nav-icon">👤</span><span>Account</span>
+        </button>
+      </nav>
+    </div>
+
+    <section class="search-page hidden" id="searchPage" aria-hidden="true">
+      <div class="search-page-header">
+        <button id="closeSearchBtn" class="search-back-btn" type="button" aria-label="Back to home">←</button>
+        <div class="search-page-bar">
+          <span aria-hidden="true">🔍</span>
+          <input id="fullSearchInput" type="search" placeholder="Search products, brands & more" aria-label="Search products" autocomplete="off" enterkeyhint="search" />
+          <button id="searchMicBtn" type="button" aria-label="Use microphone">🎙️</button>
+        </div>
+        <button id="searchCartBtn" class="search-cart-btn" type="button" aria-label="Open cart">
+          🛒
+          <span id="searchCartCount" class="search-cart-count">0</span>
+        </button>
+      </div>
+      <div class="search-page-content">
+        <div class="search-page-heading">
+          <span class="search-page-eyebrow">NEXORA SEARCH</span>
+          <h2 id="searchPageTitle">Discover something new</h2>
+          <p id="searchResultSummary">Search products, categories and brands.</p>
+        </div>
+        <section class="search-suggestions" id="searchSuggestionsSection" aria-labelledby="searchSuggestionsTitle">
+          <div class="search-suggestions-heading">
+            <h3 id="searchSuggestionsTitle">Search Suggestions</h3>
+            <span>Matching products</span>
+          </div>
+          <div id="searchSuggestions" class="search-suggestions-list"></div>
+        </section>
+        <section class="recent-searches" aria-labelledby="recentSearchesTitle">
+          <div class="recent-searches-heading">
+            <h3 id="recentSearchesTitle">Recent Searches</h3>
+            <div class="recent-searches-actions">
+              <button id="clearRecentSearchesBtn" type="button">Clear all</button>
+              <button id="editRecentSearchesBtn" type="button">Edit</button>
+            </div>
+          </div>
+          <div id="recentSearchesList" class="recent-searches-list"></div>
+        </section>
+        <div id="searchResults" class="search-results" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="filter-panel premium-popup hidden" id="filterPanel" aria-hidden="true">
+      <div class="filter-backdrop" id="filterBackdrop"></div>
+      <div class="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+        <div class="filter-sheet-header">
+          <div>
+            <span class="filter-eyebrow">DISCOVER YOUR PICKS</span>
+            <h3 id="filterTitle">Advanced Filters</h3>
+          </div>
+          <button class="filter-close" id="closeFilterBtn" type="button" aria-label="Close filters">×</button>
+        </div>
+        <div class="filter-content">
+          <div class="filter-section">
+            <div class="filter-label-row"><strong>Price range</strong><span id="priceRangeValue">₹0 - ₹1,500</span></div>
+            <input id="priceRange" class="price-range" type="range" min="0" max="1500" step="50" value="1500" />
+          </div>
+          <div class="filter-section">
+            <strong class="filter-label">Minimum rating</strong>
+            <div class="rating-options" role="group" aria-label="Minimum rating">
+              <button class="rating-filter active" data-rating-filter="0" type="button">Any</button>
+              <button class="rating-filter" data-rating-filter="4" type="button">4+ ⭐</button>
+              <button class="rating-filter" data-rating-filter="4.5" type="button">4.5+ ⭐</button>
+              <button class="rating-filter" data-rating-filter="4.8" type="button">4.8+ ⭐</button>
+            </div>
+          </div>
+          <div class="filter-section">
+            <strong class="filter-label">Category</strong>
+            <div class="filter-check-grid">
+              <label><input class="category-filter" type="checkbox" value="Fashion" /> Fashion</label>
+              <label><input class="category-filter" type="checkbox" value="Mobiles" /> Mobiles</label>
+              <label><input class="category-filter" type="checkbox" value="Electronics" /> Electronics</label>
+              <label><input class="category-filter" type="checkbox" value="Beauty" /> Beauty</label>
+              <label><input class="category-filter" type="checkbox" value="Home" /> Home</label>
+            </div>
+          </div>
+          <div class="filter-section">
+            <strong class="filter-label">Brand</strong>
+            <div class="filter-check-grid">
+              <label><input class="brand-filter" type="checkbox" value="Apple" /> Apple</label>
+              <label><input class="brand-filter" type="checkbox" value="Samsung" /> Samsung</label>
+              <label><input class="brand-filter" type="checkbox" value="Soundcore" /> Soundcore</label>
+              <label><input class="brand-filter" type="checkbox" value="Nexora" /> Nexora</label>
+            </div>
+          </div>
+          <div class="filter-section">
+            <label class="filter-label" for="sortProducts">Sort by</label>
+            <select id="sortProducts" class="sort-select">
+              <option value="relevance">Relevance</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button class="clear-filter-btn" id="clearFiltersBtn" type="button">Clear all</button>
+          <button class="apply-filter-btn" id="applyFiltersBtn" type="button">Show results</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-catalog-panel premium-popup hidden" id="categoryCatalogPanel" aria-hidden="true">
+      <div class="category-catalog-header">
+        <button id="closeCategoryCatalogBtn" class="catalog-back-btn" type="button" aria-label="Back to home">←</button>
+        <div class="catalog-heading">
+          <span class="catalog-eyebrow">CURATED FOR YOU</span>
+          <h3 id="catalogTitle">Category</h3>
+          <p id="catalogSubtitle">Explore premium picks</p>
+        </div>
+        <button id="closeCategoryCatalogIcon" class="close-cart" type="button" aria-label="Close category">×</button>
+      </div>
+      <div class="catalog-toolbar">
+        <div class="catalog-filter-chips" role="group" aria-label="Catalog filters">
+          <button class="catalog-filter-chip active" data-catalog-filter="all" type="button">All</button>
+          <button class="catalog-filter-chip" data-catalog-filter="budget" type="button">Under ₹1,000</button>
+          <button class="catalog-filter-chip" data-catalog-filter="rated" type="button">4.5+ ⭐</button>
+        </div>
+        <select id="catalogSort" class="catalog-sort" aria-label="Sort category products">
+          <option value="featured">Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+      <div id="categoryProducts" class="catalog-products"></div>
+    </section>
+
+    <aside class="cart-panel premium-popup hidden" id="cartPanel" aria-hidden="true">
+      <div class="cart-header">
+        <h3>My Cart</h3>
+        <button id="closeCartBtn" class="close-cart" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">₹0</strong>
+        </div>
+        <div class="cart-summary-row">
+          <span>Delivery</span>
+          <strong id="cartDelivery">₹0</strong>
+        </div>
+        <div class="cart-summary-row total-row">
+          <span>Total</span>
+          <strong id="cartTotal">₹0</strong>
+        </div>
+        <button id="checkoutBtn" class="checkout-btn" type="button" disabled>Checkout</button>
+      </div>
+    </aside>
+
+    <section class="checkout-panel hidden" id="checkoutPanel" aria-hidden="true">
+      <div class="checkout-header">
+        <button id="backToCartBtn" class="checkout-back-btn" type="button" aria-label="Back to cart">←</button>
+        <h3>Checkout</h3>
+        <button id="closeCheckoutBtn" class="close-cart" type="button" aria-label="Close checkout">×</button>
+      </div>
+      <div class="checkout-content">
+        <div class="checkout-section">
+          <h4>Delivery Address</h4>
+          <form id="addressForm" class="checkout-address">
+            <div class="address-fields">
+              <label>
+                Name
+                <input id="addressName" name="name" type="text" minlength="2" maxlength="80" pattern="[A-Za-z\u00C0-\u024F\u0900-\u097F .'-]{2,80}" placeholder="Enter your name" autocomplete="name" required />
+              </label>
+              <label>
+                Mobile
+                <input id="addressMobile" name="mobile" type="tel" placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required />
+              </label>
+              <label class="address-full-width">
+                Address
+                <textarea id="addressLine" name="address" minlength="8" maxlength="240" placeholder="House no., street, area" autocomplete="street-address" rows="3" required></textarea>
+              </label>
+              <label>
+                Pincode
+                <input id="addressPincode" name="pincode" type="text" placeholder="6-digit pincode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+              </label>
+            </div>
+            <p id="addressError" class="address-error" role="alert" aria-live="polite"></p>
+            <button id="saveAddressBtn" class="save-address-btn" type="submit">Save Address</button>
+          </form>
+        </div>
+        <div class="checkout-section">
+          <h4>Order Summary</h4>
+          <div class="checkout-items-header">
+            <span>Product</span>
+            <span>Qty</span>
+            <span>Amount</span>
+          </div>
+          <div id="checkoutItems" class="checkout-items"></div>
+        </div>
+        <div class="coupon-box">
+          <label for="couponInput">Have a coupon?</label>
+          <div class="coupon-input-row">
+            <input id="couponInput" type="text" placeholder="Enter coupon code" autocomplete="off" />
+            <button id="applyCouponBtn" type="button">Apply</button>
+          </div>
+          <p id="couponMessage" class="coupon-message" role="status" aria-live="polite"></p>
+        </div>
+        <div class="checkout-total">
+          <div><span>Subtotal</span><strong id="checkoutSubtotal">₹0</strong></div>
+          <div><span>Delivery</span><strong id="checkoutDelivery">₹0</strong></div>
+          <div class="discount-row"><span>Coupon Discount</span><strong id="checkoutDiscount">-₹0</strong></div>
+          <div class="checkout-grand-total"><span>Total</span><strong id="checkoutTotal">₹0</strong></div>
+        </div>
+        <div class="payment-section">
+          <div class="payment-section-heading">
+            <div>
+              <span class="payment-eyebrow">SECURE CHECKOUT</span>
+              <h4>Payment method</h4>
+            </div>
+            <span class="payment-lock">🔒</span>
+          </div>
+          <div class="payment-options" role="radiogroup" aria-label="Payment method">
+            <label class="payment-option active">
+              <input type="radio" name="paymentMethod" value="upi" checked />
+              <span class="payment-option-icon">📱</span>
+              <span><strong>UPI</strong><small>Google Pay, PhonePe, Paytm</small></span>
+              <span class="payment-check">✓</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="card" />
+              <span class="payment-option-icon">💳</span>
+              <span><strong>Card</strong><small>Credit or debit card</small></span>
+              <span class="payment-check">✓</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="cod" />
+              <span class="payment-option-icon">💵</span>
+              <span><strong>Cash on Delivery</strong><small>Pay when your order arrives</small></span>
+              <span class="payment-check">✓</span>
+            </label>
+          </div>
+          <div class="payment-details" id="upiDetails">
+            <label class="payment-field">
+              <span>UPI ID <small>optional</small></span>
+              <input id="upiIdInput" type="text" maxlength="100" placeholder="name@bank" autocomplete="off" />
+            </label>
+            <p class="payment-hint">You will be redirected to your UPI app to complete payment.</p>
+          </div>
+          <div class="payment-details hidden" id="cardDetails">
+            <label class="payment-field payment-card-number">
+              <span>Card number</span>
+              <input id="cardNumberInput" type="text" inputmode="numeric" maxlength="19" pattern="[0-9 ]{16,19}" placeholder="1234 5678 9012 3456" autocomplete="cc-number" />
+            </label>
+            <div class="payment-card-row">
+              <label class="payment-field"><span>Expiry</span><input id="cardExpiryInput" type="text" inputmode="numeric" maxlength="5" placeholder="MM/YY" autocomplete="cc-exp" /></label>
+              <label class="payment-field"><span>CVV</span><input id="cardCvvInput" type="password" inputmode="numeric" maxlength="3" placeholder="•••" autocomplete="cc-csc" /></label>
+            </div>
+          </div>
+          <div class="cod-note hidden" id="codDetails">💡 Keep cash ready at delivery. No extra payment fee.</div>
+          <p id="paymentError" class="payment-error" role="alert" aria-live="polite"></p>
+        </div>
+        <p id="addressSavedMessage" class="address-saved-message" role="status" aria-live="polite"></p>
+        <button id="placeOrderBtn" class="place-order-btn" type="button">
+          <span class="place-order-icon">🚚</span>
+          <span>Place Order</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="order-confirmation hidden" id="orderConfirmation" aria-hidden="true">
+      <div class="confirmation-card">
+        <div class="confirmation-icon">🎉</div>
+        <h3>Order Placed Successfully!</h3>
+        <p>Thank you for shopping with Nexora.</p>
+        <div class="order-id-box">
+          <span>Order ID</span>
+          <strong id="orderId">NX-000000</strong>
+        </div>
+        <p class="confirmation-note">Your order will be delivered to the address provided during checkout.</p>
+        <button id="continueAfterOrderBtn" class="continue-shopping-btn" type="button">Continue Shopping</button>
+      </div>
+    </section>
+
+    <section class="orders-panel premium-popup hidden" id="ordersPanel" aria-hidden="true">
+      <div class="orders-header">
+        <div>
+          <span class="orders-eyebrow">YOUR SHOPPING JOURNEY</span>
+          <h3>My Orders</h3>
+          <p>Track every Nexora delivery in one place.</p>
+        </div>
+        <span class="orders-count" id="ordersCount">0 orders</span>
+        <button id="closeOrdersBtn" class="close-cart" type="button" aria-label="Close orders">×</button>
+      </div>
+      <div id="ordersList" class="orders-list"></div>
+    </section>
+
+    <section class="wishlist-panel premium-popup hidden" id="wishlistPanel" aria-hidden="true">
+      <div class="orders-header">
+        <h3>Wishlist ❤️</h3>
+        <button id="closeWishlistBtn" class="close-cart" type="button" aria-label="Close wishlist">×</button>
+      </div>
+      <div id="wishlistItems" class="wishlist-items"></div>
+    </section>
+
+    <section class="notifications-panel premium-popup hidden" id="notificationsPanel" aria-hidden="true">
+      <div class="orders-header">
+        <h3>Notifications</h3>
+        <button id="closeNotificationsBtn" class="close-cart" type="button" aria-label="Close notifications">×</button>
+      </div>
+      <div class="notifications-toolbar">
+        <span>Updates for your orders and offers</span>
+        <button id="markNotificationsReadBtn" type="button">Mark all read</button>
+      </div>
+      <div id="notificationsList" class="notifications-list"></div>
+    </section>
+
+    <section class="account-panel premium-popup hidden" id="accountPanel" aria-hidden="true">
+      <div class="account-header">
+        <div class="account-avatar" id="accountAvatar">👤</div>
+        <div>
+          <h3 id="accountTitle">Profile</h3>
+          <p id="accountSubtitle">Manage your account</p>
+        </div>
+        <button id="closeAccountBtn" class="close-cart" type="button" aria-label="Close profile">×</button>
+      </div>
+      <div class="account-auth-card" id="accountAuthCard">
+        <div>
+          <strong id="accountAuthTitle">Welcome to Nexora</strong>
+          <small id="accountAuthHint">Sign in to unlock your personalized shopping experience.</small>
+        </div>
+        <button id="accountAuthAction" class="account-auth-btn" type="button">Login / Signup</button>
+      </div>
+      <div class="profile-dashboard">
+        <div class="profile-dashboard-card" data-profile-action="orders"><span>📦</span><strong id="profileOrderCount">0</strong><small>Orders</small></div>
+        <div class="profile-dashboard-card" data-profile-action="wishlist"><span>❤️</span><strong id="profileWishlistCount">0</strong><small>Wishlist</small></div>
+        <div class="profile-dashboard-card" data-profile-action="addresses"><span>📍</span><strong id="profileAddressCount">0</strong><small>Addresses</small></div>
+        <div class="profile-dashboard-card" data-profile-action="settings"><span>⚙️</span><strong>•••</strong><small>Settings</small></div>
+      </div>
+      <div class="account-menu">
+        <button class="account-menu-item" data-account-action="profile" type="button">
+          <span class="account-menu-icon">👤</span>
+          <span><strong>Profile</strong><small>View your account details</small></span>
+          <span class="account-menu-arrow">›</span>
+        </button>
+        <button class="account-menu-item" data-account-action="orders" type="button">
+          <span class="account-menu-icon">📦</span>
+          <span><strong>My Orders</strong><small>Track and manage your orders</small></span>
+          <span class="account-menu-arrow">›</span>
+        </button>
+        <button class="account-menu-item" data-account-action="wishlist" type="button">
+          <span class="account-menu-icon">❤️</span>
+          <span><strong>Wishlist</strong><small>Save products for later</small></span>
+          <span class="account-menu-arrow">›</span>
+        </button>
+        <button class="account-menu-item" data-account-action="settings" type="button">
+          <span class="account-menu-icon">⚙️</span>
+          <span><strong>Settings</strong><small>Manage app preferences</small></span>
+          <span class="account-menu-arrow">›</span>
+        </button>
+      </div>
+      <div class="account-address-manager hidden" id="accountAddressManager">
+        <div class="manager-heading">
+          <div><strong>Saved addresses</strong><small>Select an address for faster checkout.</small></div>
+          <button id="addAddressBtn" type="button">+ Add new</button>
+        </div>
+        <div id="savedAddressesList" class="saved-addresses-list"></div>
+        <form id="profileAddressForm" class="profile-address-form hidden">
+          <label>Label <select id="profileAddressLabel"><option>Home</option><option>Work</option><option>Other</option></select></label>
+          <label>Name <input id="profileAddressName" type="text" minlength="2" maxlength="80" pattern="[A-Za-z\u00C0-\u024F\u0900-\u097F .'-]{2,80}" required placeholder="Full name" /></label>
+          <label>Mobile <input id="profileAddressMobile" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10-digit mobile" /></label>
+          <label>Address <textarea id="profileAddressLine" minlength="8" maxlength="240" rows="2" required placeholder="House no., street, area"></textarea></label>
+          <label>Pincode <input id="profileAddressPincode" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6-digit pincode" /></label>
+          <div class="profile-address-actions"><button type="button" id="cancelAddressBtn">Cancel</button><button type="submit">Save address</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="profile-panel premium-popup hidden" id="profilePanel" aria-hidden="true">
+      <div class="profile-popup-card" role="dialog" aria-modal="true" aria-labelledby="profilePopupTitle">
+        <div class="profile-popup-header">
+          <div class="profile-popup-avatar" id="profilePopupAvatar">✨</div>
+          <div>
+            <span class="profile-popup-eyebrow">YOUR NEXORA PROFILE</span>
+            <h3 id="profilePopupTitle">Profile</h3>
+          </div>
+          <button id="closeProfileBtn" class="close-cart" type="button" aria-label="Close profile details">×</button>
+        </div>
+        <div class="profile-popup-body">
+          <div class="profile-detail-row">
+            <span>Full name</span>
+            <strong id="profilePopupName">Nexora member</strong>
+          </div>
+          <div class="profile-detail-row">
+            <span>Email address</span>
+            <strong id="profilePopupEmail">Not signed in</strong>
+          </div>
+          <div class="profile-detail-row">
+            <span>Account status</span>
+            <strong class="profile-status" id="profilePopupStatus">Guest</strong>
+          </div>
+        </div>
+        <button id="profilePopupAction" class="profile-popup-action" type="button">Close</button>
+      </div>
+    </section>
+
+    <section class="settings-panel premium-popup hidden" id="settingsPanel" aria-hidden="true">
+      <div class="settings-popup-card" role="dialog" aria-modal="true" aria-labelledby="settingsPopupTitle">
+        <div class="settings-popup-header">
+          <div class="settings-popup-icon">⚙️</div>
+          <div>
+            <span class="settings-popup-eyebrow">NEXORA PREFERENCES</span>
+            <h3 id="settingsPopupTitle">Settings</h3>
+            <p>Make your shopping experience feel like yours.</p>
+          </div>
+          <button id="closeSettingsBtn" class="close-cart" type="button" aria-label="Close settings">×</button>
+        </div>
+        <div class="settings-list">
+          <div class="settings-row">
+            <span><strong>Notifications</strong><small>Stay updated about orders and offers</small></span>
+            <span class="settings-badge">On</span>
+          </div>
+          <div class="settings-row">
+            <span><strong>Secure checkout</strong><small>Your account data stays protected</small></span>
+            <span class="settings-badge">Active</span>
+          </div>
+          <div class="settings-row">
+            <span><strong>App appearance</strong><small>Premium light theme</small></span>
+            <span class="settings-badge">Light</span>
+          </div>
+        </div>
+        <button id="settingsDoneBtn" class="settings-done-btn" type="button">Done</button>
+      </div>
+    </section>
+
+    <section class="auth-panel premium-popup hidden" id="authPanel" aria-hidden="true">
+      <div class="auth-backdrop" id="authBackdrop"></div>
+      <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button id="closeAuthBtn" class="auth-close" type="button" aria-label="Close login">×</button>
+        <div class="auth-brand">
+          <div class="auth-logo">N</div>
+          <span>Nexora <small>Premium Market</small></span>
+        </div>
+        <div class="auth-heading">
+          <span class="auth-eyebrow">WELCOME BACK</span>
+          <h3 id="authTitle">Login to Nexora</h3>
+          <p id="authSubtitle">Your premium shopping experience starts here.</p>
+        </div>
+        <div class="auth-tabs" role="tablist" aria-label="Authentication">
+          <button class="auth-tab active" data-auth-mode="login" type="button" role="tab" aria-selected="true">Login</button>
+          <button class="auth-tab" data-auth-mode="signup" type="button" role="tab" aria-selected="false">Create account</button>
+        </div>
+        <form id="authForm" class="auth-form">
+          <label class="auth-field auth-name-field hidden">
+            <span>Full name</span>
+            <input id="authName" type="text" minlength="2" maxlength="80" pattern="[A-Za-z\u00C0-\u024F\u0900-\u097F .'-]{2,80}" autocomplete="name" placeholder="Enter your full name" />
+          </label>
+          <label class="auth-field">
+            <span>Email address</span>
+            <input id="authEmail" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" required />
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <div class="password-wrap">
+              <input id="authPassword" type="password" minlength="6" maxlength="128" autocomplete="current-password" placeholder="Minimum 6 characters" required />
+              <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password">Show</button>
+            </div>
+          </label>
+          <label class="auth-field auth-confirm-field hidden">
+            <span>Confirm password</span>
+            <input id="authConfirmPassword" type="password" minlength="6" maxlength="128" autocomplete="new-password" placeholder="Re-enter your password" />
+          </label>
+          <div class="auth-options">
+            <label class="remember-option"><input id="rememberMe" type="checkbox" checked /> <span>Remember me</span></label>
+            <button id="forgotPasswordBtn" class="text-button" type="button">Forgot password?</button>
+          </div>
+          <p class="auth-error" id="authError" role="alert"></p>
+          <button class="auth-submit" id="authSubmitBtn" type="submit"><span id="authSubmitText">Login securely</span><span>→</span></button>
+        </form>
+        <p class="auth-switch" id="authSwitchText">New to Nexora? <button data-auth-mode="signup" type="button">Create an account</button></p>
+        <div class="auth-trust"><span>🔒 Secure demo login</span><span>•</span><span>✨ Premium access</span></div>
+      </div>
+    </section>
+
+    <section class="admin-panel premium-popup hidden" id="adminPanel" aria-hidden="true">
+      <div class="admin-header">
+        <div>
+          <span class="admin-eyebrow">STORE MANAGEMENT</span>
+          <h3>Admin Panel</h3>
+          <p>Add, edit, delete products and manage stock.</p>
+        </div>
+        <button id="closeAdminBtn" class="close-cart" type="button" aria-label="Close admin panel">×</button>
+      </div>
+      <div class="admin-content">
+        <form id="adminKeyForm" class="admin-key-form">
+          <label for="adminKeyInput">Admin key</label>
+          <div class="admin-key-row">
+            <input id="adminKeyInput" type="password" autocomplete="off" placeholder="Enter admin key" required />
+            <button type="submit">Unlock</button>
+          </div>
+          <p id="adminKeyMessage" class="admin-message" role="alert"></p>
+        </form>
+        <div id="adminWorkspace" class="hidden">
+          <section class="admin-dashboard" aria-label="Sales dashboard">
+            <div class="admin-dashboard-heading"><div><span class="admin-section-eyebrow">OVERVIEW</span><strong>Business dashboard</strong></div><button id="refreshDashboardBtn" type="button">↻ Refresh</button></div>
+            <div class="dashboard-stat-grid">
+              <article class="dashboard-stat-card stat-orders"><span>📦</span><div><strong id="dashboardOrders">0</strong><small>Orders</small></div></article>
+              <article class="dashboard-stat-card stat-products"><span>🛍️</span><div><strong id="dashboardProducts">0</strong><small>Active products</small></div></article>
+              <article class="dashboard-stat-card stat-users"><span>👥</span><div><strong id="dashboardUsers">0</strong><small>Users</small></div></article>
+              <article class="dashboard-stat-card stat-sales"><span>₹</span><div><strong id="dashboardSales">₹0</strong><small>Total sales</small></div></article>
+            </div>
+            <div class="dashboard-columns">
+              <section class="dashboard-list-card"><div class="dashboard-list-heading"><strong>Recent orders</strong><small>Latest activity</small></div><div id="dashboardOrdersList"></div></section>
+              <section class="dashboard-list-card"><div class="dashboard-list-heading"><strong>Top products</strong><small>By units sold</small></div><div id="dashboardTopProducts"></div></section>
+            </div>
+          </section>
+          <div class="admin-toolbar">
+            <div><strong id="adminProductCount">0 products</strong><small>Live inventory</small></div>
+            <button id="newProductBtn" class="admin-primary-btn" type="button">+ Add product</button>
+          </div>
+          <form id="productForm" class="product-form hidden">
+            <div class="product-form-heading"><strong id="productFormTitle">Add product</strong><button id="cancelProductBtn" type="button">Cancel</button></div>
+            <input id="productIdInput" type="hidden" />
+            <div class="admin-form-grid">
+              <label>Name<input id="productNameInput" type="text" maxlength="120" required /></label>
+              <label>SKU<input id="productSkuInput" type="text" maxlength="60" placeholder="Optional" /></label>
+              <label>Price (₹)<input id="productPriceInput" type="number" min="0" step="1" required /></label>
+              <label>Original price (₹)<input id="productOriginalPriceInput" type="number" min="0" step="1" /></label>
+              <label>Stock<input id="productStockInput" type="number" min="0" step="1" required /></label>
+              <label>Category<input id="productCategoryInput" type="text" maxlength="60" required /></label>
+              <label>Brand<input id="productBrandInput" type="text" maxlength="60" required /></label>
+              <label>Image style<select id="productImageClassInput"><option value="product-one">Blue</option><option value="product-two">Purple</option><option value="product-three">Green</option><option value="product-four">Orange</option></select></label>
+            </div>
+            <label class="admin-description-field">Description<textarea id="productDescriptionInput" maxlength="500" rows="2" placeholder="Short product description"></textarea></label>
+            <label class="admin-active-option"><input id="productActiveInput" type="checkbox" checked /> Visible in storefront</label>
+            <p id="productFormMessage" class="admin-message" role="alert"></p>
+            <button class="admin-save-btn" type="submit">Save product</button>
+          </form>
+          <div id="adminProductsList" class="admin-products-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="loading-screen visible" id="loadingScreen" aria-hidden="false">
+      <div class="loading-orb" aria-hidden="true">
+        <div class="loading-logo">N</div>
+      </div>
+      <div class="loading-copy">
+        <strong>Nexora</strong>
+        <span id="loadingMessage">Preparing your premium experience</span>
+      </div>
+      <div class="loading-progress" role="progressbar" aria-label="Loading Nexora">
+        <span id="loadingProgress"></span>
+      </div>
+      <span class="loading-caption">Premium Market <i aria-hidden="true">•</i> Shop smarter</span>
+    </div>
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <div class="product-modal premium-popup hidden" id="productModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close="true"></div>
+      <div class="modal-content">
+        <button class="close-modal" aria-label="Close product details">×</button>
+        <div class="modal-gallery">
+          <div class="modal-image product-one" id="modalMainImage"></div>
+          <div class="gallery-thumbnails" id="galleryThumbnails" aria-label="Product image thumbnails"></div>
+        </div>
+        <div class="modal-body">
+        <div class="modal-badge" id="modalBadge">Popular</div>
+          <div class="modal-tools">
+            <button id="modalWishlistBtn" type="button">♡ Wishlist</button>
+            <button id="modalShareBtn" type="button">↗ Share</button>
+          </div>
+          <h4 id="modalTitle">Product Name</h4>
+          <div class="modal-rating">⭐ <span id="modalRating">4.8</span></div>
+          <div id="modalReviews" class="modal-reviews"></div>
+          <div class="modal-price-row">
+            <span id="modalPrice">₹499</span>
+            <span class="modal-original">₹649</span>
+          </div>
+          <div class="modal-delivery"><span>🚚</span><span><strong>Free delivery</strong><small>Deliver to your address in 2–4 days</small></span></div>
+          <div class="modal-seller"><span>Sold by</span><strong id="modalSeller">Nexora Retail</strong></div>
+          <div class="modal-variants" id="modalVariants"></div>
+          <section class="product-info-section">
+            <div class="product-tabs" role="tablist" aria-label="Product information">
+              <button class="product-tab active" type="button" role="tab" aria-selected="true" data-product-tab="showcase">Showcase</button>
+              <button class="product-tab" type="button" role="tab" aria-selected="false" data-product-tab="specifications">Specifications</button>
+              <button class="product-tab" type="button" role="tab" aria-selected="false" data-product-tab="description">Description</button>
+            </div>
+            <div class="product-tab-panel active" id="productShowcasePanel"></div>
+            <div class="product-tab-panel" id="productSpecificationsPanel"></div>
+            <div class="product-tab-panel" id="productDescriptionPanel"></div>
+          </section>
+          <section class="reviews-section">
+            <div class="details-section-heading"><h5>Ratings & Reviews</h5><span id="modalVerifiedBuyers">Verified buyers</span></div>
+            <div id="modalReviewSummary" class="review-summary"></div>
+            <div id="modalReviewHighlights" class="review-highlights"></div>
+            <div id="modalReviewsList" class="reviews-list"></div>
+          </section>
+          <section class="questions-section">
+            <div class="details-section-heading"><h5>Questions & Answers</h5><span>Helpful answers</span></div>
+            <div id="modalQuestionsList" class="questions-list"></div>
+          </section>
+          <section class="recent-viewed-section">
+            <div class="details-section-heading"><h5>Recently Viewed</h5><span>Your picks</span></div>
+            <div id="modalRecentlyViewed" class="detail-product-strip"></div>
+          </section>
+          <section class="more-products-section">
+            <div class="details-section-heading"><h5>More Products for You</h5><span>From this category</span></div>
+            <div id="modalMoreProducts" class="detail-product-strip"></div>
+          </section>
+        <p id="modalDescription">
+            Premium quality product designed for everyday comfort, durability, and style.
+          </p>
+        <div class="modal-highlights"><span>✓ Premium quality</span><span>✓ Fast delivery</span><span>✓ Easy returns</span></div>
+        <section class="related-products-section">
+          <div class="related-heading"><h5>You May Also Like</h5><span>Curated picks</span></div>
+          <div class="related-products" id="relatedProducts"></div>
+        </section>
+        <div class="modal-actions"><button id="buyNowBtn" class="modal-secondary-action" type="button">Buy Now</button><button id="addToCartBtn" class="modal-action" type="button">Add to Cart</button></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
