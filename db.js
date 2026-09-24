@@ -19,20 +19,6 @@ db.exec(`
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
   );
-  CREATE TABLE IF NOT EXISTS cart_items (
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-    quantity INTEGER NOT NULL CHECK (quantity > 0 AND quantity <= 99),
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, product_id)
-  );
-  CREATE TABLE IF NOT EXISTS wishlist_items (
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, product_id)
-  );
   CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -51,6 +37,20 @@ db.exec(`
     active INTEGER NOT NULL DEFAULT 1 CHECK (active IN (0, 1)),
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  );
+  CREATE TABLE IF NOT EXISTS cart_items (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    quantity INTEGER NOT NULL CHECK (quantity > 0 AND quantity <= 99),
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, product_id)
+  );
+  CREATE TABLE IF NOT EXISTS wishlist_items (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, product_id)
   );
   CREATE TABLE IF NOT EXISTS addresses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,6 +73,7 @@ db.exec(`
     subtotal INTEGER NOT NULL DEFAULT 0 CHECK (subtotal >= 0),
     delivery_fee INTEGER NOT NULL DEFAULT 0 CHECK (delivery_fee >= 0),
     discount INTEGER NOT NULL DEFAULT 0 CHECK (discount >= 0),
+    payment_method TEXT NOT NULL DEFAULT 'upi',
     address_name TEXT,
     address_mobile TEXT,
     address_line TEXT,
@@ -101,6 +102,7 @@ const addOrderColumn = (name, definition) => {
 addOrderColumn('subtotal', 'INTEGER NOT NULL DEFAULT 0');
 addOrderColumn('delivery_fee', 'INTEGER NOT NULL DEFAULT 0');
 addOrderColumn('discount', 'INTEGER NOT NULL DEFAULT 0');
+addOrderColumn('payment_method', "TEXT NOT NULL DEFAULT 'upi'");
 addOrderColumn('address_name', 'TEXT');
 addOrderColumn('address_mobile', 'TEXT');
 addOrderColumn('address_line', 'TEXT');

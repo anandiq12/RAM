@@ -129,6 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeOrdersButton = document.getElementById('closeOrdersBtn');
   const ordersList = document.getElementById('ordersList');
   const ordersCount = document.getElementById('ordersCount');
+  const orderDetailsPanel = document.getElementById('orderDetailsPanel');
+  const closeOrderDetailsButton = document.getElementById('closeOrderDetailsBtn');
+  const orderDetailsContent = document.getElementById('orderDetailsContent');
+  const orderDetailsSubtitle = document.getElementById('orderDetailsSubtitle');
   const accountPanel = document.getElementById('accountPanel');
   const closeAccountButton = document.getElementById('closeAccountBtn');
   const profilePanel = document.getElementById('profilePanel');
@@ -846,6 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let orders = loadOrders();
+  let editingAddressId = null;
 
   const loadAddress = () => {
     try {
@@ -1131,8 +1136,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const getCouponDiscount = (subtotal) => {
     if (!appliedCoupon || subtotal <= 0) return 0;
-    if (appliedCoupon === 'SAVE10') return Math.round(subtotal * 0.1);
-    if (appliedCoupon === 'DEAL50') return Math.min(50, subtotal);
+    if (appliedCoupon === 'SAVE100' && subtotal >= 999) return 100;
+    if (appliedCoupon === 'BANK10') return Math.round(subtotal * 0.1);
+    if (appliedCoupon === 'FREEDEL') return 40;
     return 0;
   };
 
@@ -1209,6 +1215,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!item) return;
 
         if (action === 'increase') {
+          if (Number.isFinite(Number(item.stock)) && item.stock >= 0 && item.qty >= item.stock) {
+            showToast(`Only ${item.stock} left in stock.`, 'error');
+            return;
+          }
           item.qty += 1;
         } else if (action === 'decrease') {
           item.qty -= 1;
@@ -1263,6 +1273,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ordersPanel.setAttribute('aria-hidden', 'true');
   };
 
+  const closeOrderDetailsPanel = () => {
+    orderDetailsPanel?.classList.add('hidden');
+    orderDetailsPanel?.setAttribute('aria-hidden', 'true');
+  };
+
   const closeWishlistPanel = () => {
     if (!wishlistPanel) return;
     wishlistPanel.classList.add('hidden');
@@ -1272,6 +1287,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const productFromCard = (card) => ({
     name: card.querySelector('.product-name')?.textContent.trim() || 'Product',
     price: parsePrice(card.dataset.price || card.querySelector('.product-price')?.textContent),
+    stock: Number(card.dataset.stock || 99),
     imageClass: [...(card.querySelector('.product-image')?.classList || [])]
       .find((name) => name.startsWith('product-')) || 'product-one'
   });
@@ -1303,6 +1319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         category: product.category,
         brand: product.brand,
         imageClass: safeImageClass(product.image_class),
+        stock: Number(product.stock || 0),
         discount: product.original_price && product.original_price > product.price
           ? `-${Math.round((1 - product.price / product.original_price) * 100)}%`
           : '',
@@ -1320,7 +1337,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const catalogCardMarkup = (product) => `
-    <article class="product-card catalog-product-card" data-name="${product.name.toLowerCase()}" data-price="${product.price}" data-rating="${product.rating}" data-reviews="${product.reviews}" data-category="${product.category}" data-brand="${product.brand}">
+    <article class="product-card catalog-product-card" data-name="${product.name.toLowerCase()}" data-price="${product.price}" data-rating="${product.rating}" data-reviews="${product.reviews}" data-category="${product.category}" data-brand="${product.brand}" data-stock="${product.stock ?? 0}">
       <div class="product-image ${product.imageClass}">
         <span class="product-discount">${product.discount}</span>
         <button class="wishlist-btn" type="button" aria-label="Add ${product.name} to wishlist">♡</button>
@@ -1733,7 +1750,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>          <strong>${escapeHtml(address.label)}</strong><small>${escapeHtml(address.name)} · ${escapeHtml(address.mobile)}<br>${escapeHtml(address.address)}, ${escapeHtml(address.pincode)}</small></span>
           <span class="saved-address-check">${address.selected ? '✓' : ''}</span>
         </button>
-        <button class="saved-address-remove" type="button" data-remove-address="${escapeHtml(address.id)}" aria-label="Remove ${escapeHtml(address.label)} address">Remove</button>
+        <div class="saved-address-actions">
+          <button class="saved-address-edit" type="button" data-edit-address="${escapeHtml(address.id)}">Edit</button>
+          <button class="saved-address-remove" type="button" data-remove-address="${escapeHtml(address.id)}" aria-label="Remove ${escapeHtml(address.label)} address">Remove</button>
+        </div>
       </article>
     `).join('') : '<div class="address-empty">📍<strong>No saved addresses</strong><small>Add Home, Work or Other address.</small></div>';
     savedAddressesList.querySelectorAll('.saved-address-select').forEach((button) => {
@@ -1757,6 +1777,20 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSavedAddresses();
         renderProfileDashboard();
         showToast('Address removed', 'info');
+      });
+    });
+    savedAddressesList.querySelectorAll('.saved-address-edit').forEach((button) => {
+      button.addEventListener('click', () => {
+        const address = addresses.find((item) => item.id === button.dataset.editAddress);
+        if (!address) return;
+        editingAddressId = address.id;
+        profileAddressLabel.value = address.label || 'Home';
+        profileAddressName.value = address.name || '';
+        profileAddressMobile.value = address.mobile || '';
+        profileAddressLine.value = address.address || '';
+        profileAddressPincode.value = address.pincode || '';
+        profileAddressForm.classList.remove('hidden');
+        profileAddressName.focus();
       });
     });
   };
@@ -1835,6 +1869,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>Total</span>
           <strong>${currency(order.total)}</strong>
         </div>
+        <button class="order-details-btn" type="button" data-order-details="${escapeHtml(order.id)}">View full details</button>
         <div class="order-status-tracker" aria-label="Order status">
           ${orderStages.map((stage, index) => {
             const currentIndex = Math.max(0, orderStages.indexOf(order.status));
@@ -1850,6 +1885,38 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </article>
     `).join('');
+    ordersList.querySelectorAll('[data-order-details]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const order = orders.find((item) => item.id === button.dataset.orderDetails);
+        if (order) openOrderDetailsPanel(order);
+      });
+    });
+  };
+
+  const openOrderDetailsPanel = (order) => {
+    if (!orderDetailsPanel || !orderDetailsContent) return;
+    closeOrdersPanel();
+    closeAccountPanel();
+    closeWishlistPanel();
+    if (orderDetailsSubtitle) orderDetailsSubtitle.textContent = `${order.id} · ${new Date(order.createdAt || Date.now()).toLocaleDateString('en-IN')}`;
+    orderDetailsContent.innerHTML = `
+      <div class="order-details-summary">
+        <span class="order-status-badge">${escapeHtml(order.status || 'Placed')}</span>
+        <strong>${currency(order.total)}</strong>
+      </div>
+      <div class="order-details-items">
+        ${(order.items || []).map((item) => `
+          <div class="order-details-item">
+            <div class="ordered-product-image ${safeImageClass(item.imageClass)}"></div>
+            <div><strong>${escapeHtml(item.name || item.product_name || 'Product')}</strong><small>${item.qty || item.quantity || 1} × ${currency(item.price || item.unit_price || 0)}</small></div>
+            <strong>${currency((item.price || item.unit_price || 0) * (item.qty || item.quantity || 1))}</strong>
+          </div>
+        `).join('')}
+      </div>
+      <div class="order-details-total"><span>Order total</span><strong>${currency(order.total)}</strong></div>
+    `;
+    orderDetailsPanel.classList.remove('hidden');
+    orderDetailsPanel.setAttribute('aria-hidden', 'false');
   };
 
   const openOrdersPanel = () => {
@@ -1859,6 +1926,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeOrderConfirmation();
     closeAccountPanel();
     closeProfilePanel();
+    closeOrderDetailsPanel();
     renderOrders();
     ordersPanel.classList.remove('hidden');
     ordersPanel.setAttribute('aria-hidden', 'false');
@@ -1913,6 +1981,7 @@ document.addEventListener('DOMContentLoaded', () => {
               pincode: addressPincodeInput.value.trim()
             },
             coupon: appliedCoupon || undefined,
+            payment_method: selectedPaymentMethod(),
             items: apiItems
           })
         });
@@ -2063,6 +2132,21 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCheckoutButton.addEventListener('click', closeCheckoutPanel);
   }
 
+  paymentInputs.forEach((input) => input.addEventListener('change', updatePaymentDetails));
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('input', () => {
+      const digits = cardNumberInput.value.replace(/\D/g, '').slice(0, 16);
+      cardNumberInput.value = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+    });
+  }
+  if (cardExpiryInput) {
+    cardExpiryInput.addEventListener('input', () => {
+      const digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
+      cardExpiryInput.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+    });
+  }
+  updatePaymentDetails();
+
   if (applyCouponButton) {
     applyCouponButton.addEventListener('click', () => {
       const code = couponInput?.value.trim().toUpperCase() || '';
@@ -2072,26 +2156,11 @@ document.addEventListener('DOMContentLoaded', () => {
           couponMessage.textContent = 'Enter a coupon code to apply.';
           couponMessage.className = 'coupon-message error';
         }
-
-        paymentInputs.forEach((input) => input.addEventListener('change', updatePaymentDetails));
-        if (cardNumberInput) {
-          cardNumberInput.addEventListener('input', () => {
-            const digits = cardNumberInput.value.replace(/\D/g, '').slice(0, 16);
-            cardNumberInput.value = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
-          });
-        }
-        if (cardExpiryInput) {
-          cardExpiryInput.addEventListener('input', () => {
-            const digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
-            cardExpiryInput.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
-          });
-        }
-        updatePaymentDetails();
         renderCheckout();
         return;
       }
 
-      if (!['SAVE10', 'DEAL50'].includes(code)) {
+      if (!['SAVE100', 'BANK10', 'FREEDEL'].includes(code)) {
         appliedCoupon = null;
         if (couponMessage) {
           couponMessage.textContent = 'Invalid coupon code.';
@@ -2102,6 +2171,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const subtotal = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
+      if (code === 'SAVE100' && subtotal < 999) {
+        appliedCoupon = null;
+        if (couponMessage) {
+          couponMessage.textContent = 'SAVE100 applies on orders above ₹999.';
+          couponMessage.className = 'coupon-message error';
+        }
+        renderCheckout();
+        return;
+      }
       appliedCoupon = code;
       if (couponMessage) {
         couponMessage.textContent = `${code} applied successfully.`;
@@ -2114,6 +2193,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (closeOrdersButton) {
     closeOrdersButton.addEventListener('click', closeOrdersPanel);
+  }
+  if (closeOrderDetailsButton) {
+    closeOrderDetailsButton.addEventListener('click', closeOrderDetailsPanel);
   }
 
   if (closeWishlistButton) {
@@ -2233,16 +2315,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   if (addAddressButton) addAddressButton.addEventListener('click', () => {
+    editingAddressId = null;
     profileAddressForm?.classList.remove('hidden');
     profileAddressForm?.reset();
   });
-  if (cancelAddressButton) cancelAddressButton.addEventListener('click', () => profileAddressForm?.classList.add('hidden'));
+  if (cancelAddressButton) cancelAddressButton.addEventListener('click', () => {
+    editingAddressId = null;
+    profileAddressForm?.classList.add('hidden');
+  });
   if (profileAddressForm) {
     profileAddressForm.addEventListener('submit', (event) => {
       event.preventDefault();
       if (!profileAddressForm.reportValidity()) return;
       const address = {
-        id: `ADDR-${Date.now()}`,
+        id: editingAddressId || `ADDR-${Date.now()}`,
         label: profileAddressLabel.value,
         name: profileAddressName.value.trim(),
         mobile: profileAddressMobile.value.trim(),
@@ -2250,16 +2336,21 @@ document.addEventListener('DOMContentLoaded', () => {
         pincode: profileAddressPincode.value.trim(),
         selected: !addresses.length
       };
-      addresses = [...addresses.map((item) => ({ ...item, selected: address.selected ? false : item.selected })), address];
+      addresses = editingAddressId
+        ? addresses.map((item) => item.id === editingAddressId ? { ...item, ...address } : item)
+        : [...addresses.map((item) => ({ ...item, selected: address.selected ? false : item.selected })), address];
       saveAddresses();
       if (currentUser?.token) {
-        apiRequest('/api/addresses', {
-          method: 'POST',
+        const endpoint = editingAddressId && /^\d+$/.test(String(editingAddressId))
+          ? `/api/addresses/${editingAddressId}` : '/api/addresses';
+        apiRequest(endpoint, {
+          method: editingAddressId && /^\d+$/.test(String(editingAddressId)) ? 'PUT' : 'POST',
           body: JSON.stringify({ label: address.label, name: address.name, mobile: address.mobile, line: address.address, pincode: address.pincode })
         }).then(() => syncAccountData()).catch(() => {});
       }
       if (address.selected) applyAddressToCheckout(address);
       profileAddressForm.classList.add('hidden');
+      editingAddressId = null;
       renderSavedAddresses();
       renderProfileDashboard();
       showToast(`${address.label} address saved`);
@@ -2386,15 +2477,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const productPrice = modalPrice?.textContent || '₹499';
       const productImageClass = modalImage?.dataset.productClass || 'product-one';
       const foundItem = cart.find((item) => item.name === productName);
+      const stock = Number(activeProductCard?.dataset.stock || 99);
 
       if (foundItem) {
+        if (stock >= 0 && foundItem.qty >= stock) {
+          showToast(stock ? `Only ${stock} left in stock.` : 'This product is out of stock.', 'error');
+          return;
+        }
         foundItem.qty += 1;
       } else {
+        if (stock === 0) {
+          showToast('This product is out of stock.', 'error');
+          return;
+        }
         cart.push({
           name: productName,
           price: parsePrice(productPrice),
           qty: 1,
-          imageClass: productImageClass
+          imageClass: productImageClass,
+          stock
         });
       }
 

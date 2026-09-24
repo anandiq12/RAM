@@ -57,7 +57,7 @@ const integer = (value, field) => {
   return number;
 };
 const validName = (value) => typeof value === 'string'
-  && /^[A-Za-z\u00C0-\u024F\u0900-\u097F .'-]{2,80}$/.test(value.trim());
+  && /^[\p{L}\p{N} .,'-]{2,80}$/u.test(value.trim());
 const validEmail = (value) => typeof value === 'string'
   && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
 const validAddress = (body) => validName(body.name)
@@ -135,7 +135,10 @@ const readProductBody = (body, partial = false) => {
     if (result[field] !== undefined && result[field] !== null) result[field] = integer(result[field], field);
   });
   if (result.rating !== undefined && (!Number.isFinite(Number(result.rating)) || Number(result.rating) < 0 || Number(result.rating) > 5)) throw fail('rating must be between 0 and 5');
-  if (result.active !== undefined) result.active = result.active ? 1 : 0;
+  if (result.active !== undefined) {
+    const activeValue = String(result.active).trim().toLowerCase();
+    result.active = ['1', 'true', 'yes', 'on'].includes(activeValue) ? 1 : 0;
+  }
   return result;
 };
 app.get('/api/admin/products', requireAdmin, (req, res) => {
@@ -355,7 +358,8 @@ const orderRows = (userId) => db.prepare(`
 app.get('/api/orders', requireAuth, (req, res) => res.json({ orders: orderRows(req.user.id) }));
 app.post('/api/orders', requireAuth, (req, res, next) => {
   try {
-    const { items, address_id: addressId, address, coupon } = req.body || {};
+    const { items, address_id: addressId, address, coupon, payment_method: paymentMethod = 'upi' } = req.body || {};
+    if (!['upi', 'card', 'cod'].includes(paymentMethod)) throw fail('Unsupported payment method');
     if (!Array.isArray(items) || !items.length) throw fail('At least one order item is required');
     let resolvedAddressId = addressId || null;
     if (resolvedAddressId && !db.prepare('SELECT id FROM addresses WHERE id = ? AND user_id = ?').get(resolvedAddressId, req.user.id)) {
@@ -385,9 +389,11 @@ app.post('/api/orders', requireAuth, (req, res, next) => {
       });
       const subtotal = products.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
       const deliveryFee = subtotal > 0 ? 40 : 0;
-      const discount = coupon === 'SAVE10'
-        ? Math.round(subtotal * 0.1)
-        : coupon === 'DEAL50' ? Math.min(50, subtotal) : 0;
+      const discount = coupon === 'SAVE100' && subtotal >= 999
+        ? 100
+        : coupon === 'BANK10'
+          ? Math.round(subtotal * 0.1)
+          : coupon === 'FREEDEL' ? deliveryFee : 0;
       const total = subtotal + deliveryFee - discount;
       let orderAddress = resolvedAddressId
         ? db.prepare('SELECT name, mobile, line, pincode FROM addresses WHERE id = ? AND user_id = ?').get(resolvedAddressId, req.user.id)
@@ -406,9 +412,9 @@ app.post('/api/orders', requireAuth, (req, res, next) => {
         };
       }
       const order = db.prepare(`INSERT INTO orders
-        (user_id, address_id, status, subtotal, delivery_fee, discount, address_name, address_mobile, address_line, address_pincode, total)
-        VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?)`).run(
-        req.user.id, resolvedAddressId, subtotal, deliveryFee, discount,
+        (user_id, address_id, status, subtotal, delivery_fee, discount, payment_method, address_name, address_mobile, address_line, address_pincode, total)
+        VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+        req.user.id, resolvedAddressId, subtotal, deliveryFee, discount, paymentMethod,
         orderAddress.name, orderAddress.mobile, orderAddress.line, orderAddress.pincode, total
       );
       const addItem = db.prepare(`INSERT INTO order_items

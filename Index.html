@@ -140,10 +140,10 @@
 
         <div class="section-title">
           <h3>Popular Products</h3>
-          <a href="#">View all</a>
+          <a href="#products">View all</a>
         </div>
 
-        <section class="products" aria-label="Popular products">
+        <section class="products" id="products" aria-label="Popular products">
           <article class="product-card" data-name="iphone pro case" data-price="₹499" data-original-price="₹649" data-discount="-20%" data-rating="4.8" data-reviews="128" data-category="Mobiles" data-brand="Apple">
             <div class="product-image product-one">
               <span class="product-discount">-20%</span>
@@ -507,6 +507,18 @@
         <button id="closeOrdersBtn" class="close-cart" type="button" aria-label="Close orders">×</button>
       </div>
       <div id="ordersList" class="orders-list"></div>
+    </section>
+
+    <section class="order-details-panel premium-popup hidden" id="orderDetailsPanel" aria-hidden="true">
+      <div class="orders-header">
+        <div>
+          <span class="orders-eyebrow">ORDER SNAPSHOT</span>
+          <h3>Order Details</h3>
+          <p id="orderDetailsSubtitle">Your Nexora order summary.</p>
+        </div>
+        <button id="closeOrderDetailsBtn" class="close-cart" type="button" aria-label="Close order details">×</button>
+      </div>
+      <div id="orderDetailsContent" class="order-details-content"></div>
     </section>
 
     <section class="wishlist-panel premium-popup hidden" id="wishlistPanel" aria-hidden="true">

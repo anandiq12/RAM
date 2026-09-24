@@ -1862,6 +1862,20 @@ main {
   overflow-y: auto;
 }
 
+.order-details-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1350;
+  width: min(100%, 390px);
+  margin: 0 auto;
+  background: #f8fbff;
+  overflow-y: auto;
+}
+
+.order-details-panel.hidden {
+  display: none;
+}
+
 .orders-panel.hidden {
   display: none;
 }
@@ -5544,6 +5558,7 @@ textarea:focus-visible {
 .category-catalog-panel.premium-popup,
 .cart-panel.premium-popup,
 .orders-panel.premium-popup,
+.order-details-panel.premium-popup,
 .wishlist-panel.premium-popup,
 .notifications-panel.premium-popup,
 .account-panel.premium-popup,
@@ -5684,6 +5699,7 @@ textarea:focus-visible {
   .category-catalog-panel.premium-popup,
   .cart-panel.premium-popup,
   .orders-panel.premium-popup,
+  .order-details-panel.premium-popup,
   .wishlist-panel.premium-popup,
   .notifications-panel.premium-popup,
   .account-panel.premium-popup,
@@ -5710,4 +5726,70 @@ textarea:focus-visible {
     animation: none;
     transition: none;
   }
+}
+ .saved-address-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.saved-address-edit {
+  border: 0;
+  background: transparent;
+  color: #6d28d9;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.order-details-panel {
+  padding: 22px;
+}
+
+.order-details-content {
+  display: grid;
+  gap: 16px;
+}
+
+.order-details-summary,
+.order-details-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f5f3ff;
+}
+
+.order-details-items {
+  display: grid;
+  gap: 10px;
+}
+
+.order-details-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #ece8ff;
+  border-radius: 14px;
+}
+
+.order-details-item small {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+}
+
+.order-details-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid #ddd6fe;
+  border-radius: 12px;
+  background: #fff;
+  color: #6d28d9;
+  font-weight: 700;
+  cursor: pointer;
 }
