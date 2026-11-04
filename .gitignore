@@ -1,4 +1,5 @@
 node_modules/
+/www/
 nexora.sqlite
 nexora.sqlite-shm
 nexora.sqlite-wal
@@ -8,5 +9,19 @@ nexora.sqlite-wal
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+/secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+/backups/
+/database-backups/
+/logs/
 npm-debug.log*
 *.log

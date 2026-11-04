@@ -2,16 +2,29 @@
   "name": "nexora-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Node.js, Express and SQLite backend for Nexora",
+  "description": "Node.js and Express backend for Nexora",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "backup:sqlite": "node scripts/backup-sqlite.js",
+    "sync:web": "node scripts/sync-web-assets.js",
+    "sync:android": "npm run sync:web && npx cap sync android",
+    "import:supplier-catalog": "node scripts/import-supplier-catalog.js",
+    "migrate:postgres": "node scripts/migrate-sqlite-to-postgres.js",
+    "test": "node --test"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "better-sqlite3": "^13.0.3",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "csv-parse": "^7.0.3",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.2",
+    "pg": "^8.23.1"
   },
   "engines": {
     "node": ">=18"

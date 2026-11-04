@@ -14,3 +14,11 @@ services:
         generateValue: true
       - key: DATABASE_PATH
         value: /tmp/nexora.sqlite
+      - key: COD_FREE_SHIPPING_THRESHOLD
+        value: "899"
+      - key: COD_ENABLED
+        value: "false"
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: SENDGRID_FROM_EMAIL
+        sync: false

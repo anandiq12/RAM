@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: nexora-production
+    runtime: node
+    plan: starter
+    disk:
+      name: nexora-data
+      mountPath: /var/data
+      sizeGB: 1
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/nexora.sqlite
+      - key: DATABASE_DURABLE
+        value: "true"
+      - key: COD_ENABLED
+        value: "false"
+      - key: SHIPPING_WEBHOOK_SECRET
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: SENDGRID_FROM_EMAIL
+        sync: false
